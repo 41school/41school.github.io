@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testlar | 41-Maktab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Qo'shimcha stillar */
+    .test-section {
+      padding: 60px 0 100px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      min-height: 80vh;
+    }
+    
+    /* Kombinatsion test kartasi */
+    .subject-card.kombinatsion {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: white;
+      grid-column: span 2;
+    }
+    
+    .subject-card.kombinatsion .subject-icon {
+      background: white;
+      color: #f59e0b;
+    }
+    
+    .subject-card.kombinatsion h3,
+    .subject-card.kombinatsion p {
+      color: white;
+    }
+    
+    .subject-card.kombinatsion .subject-info span {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    
+    /* Ball va vaqt ko'rsatkichi */
+    .test-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #e2e8f0;
+    }
+    
+    .test-stats span {
+      font-size: 13px;
+      color: #64748b;
+    }
+    
+    .test-stats .ball {
+      color: #10b981;
+      font-weight: 600;
+    }
+    
+    .test-stats .time {
+      color: #3b82f6;
+      font-weight: 600;
+    }
+    
+    body.dark .test-stats {
+      border-top-color: #334155;
+    }
+    
+    body.dark .test-stats span {
+      color: #94a3b8;
+    }
+    
+    @media (max-width: 768px) {
+      .subject-card.kombinatsion {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50">
+        <div class="brand">
+          <h1>41-Maktab</h1>
+          <p>Bilim – kelajak kaliti</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <ul>
+          <li><a href="index.html">Asosiy</a></li>
+          <li><a href="yangiliklar.html">Yangiliklar</a></li>
+          <li><a href="loyihalar.html">Loyihalar</a></li>
+          <li><a href="testlar.html" class="active">Testlar</a></li>
+          <li><a href="kutubxona.html">Kutubxona</a></li>
+          <li><a href="ai.html">AI</a></li>
+          <li><a href="aloqa.html">Aloqa</a></li>
+        </ul>
+      </nav>
+      <div class="nav-tools">
+        <input type="text" id="search-input" placeholder="Qidiruv..." class="search-box">
+        <button id="dark-mode-toggle" class="dark-btn">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <section class="page-title test-title">
+    <div class="container">
+      <h1>📝 Online testlar</h1>
+      <p>Bilimingizni sinab ko'ring | 20 savol | 35 daqiqa | 40 ball</p>
+    </div>
+    <div class="floating-element"></div>
+  </section>
+
+  <!-- TEST SECTION -->
+  <section class="test-section" id="test-section">
+    <div class="container">
+      
+      <!-- Section Header -->
+      <div class="section-header">
+        <h2 class="section-title">🎯 Testlarni tanlang</h2>
+        <p class="section-description">Sinfingizni tanlang va bilimingizni sinab ko'ring</p>
+      </div>
+
+      <!-- Test Selection -->
+      <div class="test-selection" id="test-selection">
+        
+        <!-- Sinf tanlash -->
+        <div class="class-selector">
+          <div class="selector-label">
+            <span class="label-icon">📚</span>
+            <span>Sinfingizni tanlang:</span>
+          </div>
+          <div class="class-buttons">
+            <button class="class-btn" data-class="5" onclick="selectTestClass('5')">5-sinf</button>
+            <button class="class-btn" data-class="6a" onclick="selectTestClass('6a')">6-A sinf</button>
+            <button class="class-btn" data-class="6b" onclick="selectTestClass('6b')">6-B sinf</button>
+            <button class="class-btn" data-class="7a" onclick="selectTestClass('7a')">7-A sinf</button>
+            <button class="class-btn" data-class="7b" onclick="selectTestClass('7b')">7-B sinf</button>
+            <button class="class-btn" data-class="8a" onclick="selectTestClass('8a')">8-A sinf</button>
+            <button class="class-btn" data-class="8b" onclick="selectTestClass('8b')">8-B sinf</button>
+            <button class="class-btn" data-class="9a" onclick="selectTestClass('9a')">9-A sinf</button>
+            <button class="class-btn" data-class="9b" onclick="selectTestClass('9b')">9-B sinf</button>
+            <button class="class-btn" data-class="10a" onclick="selectTestClass('10a')">10-A sinf</button>
+          </div>
+        </div>
+
+        <!-- Fanlar grid -->
+        <div class="subjects-grid" id="subjects-grid">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Testlar yuklanmoqda...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Info Form -->
+      <div class="student-info-form" id="student-info-form" style="display: none;">
+        <div class="form-card">
+          <div class="form-header">
+            <span class="form-icon">👤</span>
+            <h3>O'quvchi ma'lumotlari</h3>
+          </div>
+          <form id="student-form" onsubmit="submitStudentInfo(event)">
+            <div class="input-group">
+              <label for="student-name">Ismingiz:</label>
+              <input type="text" id="student-name" required placeholder="Ismingizni kiriting">
+            </div>
+            <div class="input-group">
+              <label for="student-surname">Familyangiz:</label>
+              <input type="text" id="student-surname" required placeholder="Familyangizni kiriting">
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="backToSubjects()">Orqaga</button>
+              <button type="submit" class="btn btn-primary">Testni boshlash</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Test Container -->
+      <div class="test-container" id="test-container" style="display: none;">
+        <div class="test-header">
+          <h2 id="test-title">Matematika testi</h2>
+          <div class="test-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <span id="progress-text">0/20</span>
+          </div>
+          <div class="test-timer" id="timer">⏱️ 35:00</div>
+          <div class="test-score" id="test-score">🎯 0 ball</div>
+          <button class="exit-btn" onclick="exitTest()">✖️ Chiqish</button>
+        </div>
+
+        <div class="test-content">
+          <div class="question-container" id="question-container">
+            <!-- Savollar dinamik yuklanadi -->
+          </div>
+
+          <div class="test-navigation">
+            <button class="nav-btn prev-btn" id="prev-btn" onclick="previousQuestion()" disabled>← Oldingi</button>
+            <button class="nav-btn next-btn" id="next-btn" onclick="nextQuestion()">Keyingi →</button>
+            <button class="nav-btn finish-btn" id="finish-btn" onclick="finishTest()" style="display: none;">✅ Tugatish</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Container -->
+      <div class="results-container" id="results-container" style="display: none;">
+        <div class="results-card">
+          <div class="results-header">
+            <span class="results-icon">🏆</span>
+            <h2>Test tugadi!</h2>
+          </div>
+          
+          <div class="score-display">
+            <div class="score-circle" id="score-circle">
+              <span id="score-percentage">0%</span>
+            </div>
+            <div class="score-details">
+              <p>To'g'ri javoblar: <strong id="correct-count">0</strong> / <strong id="total-count">20</strong></p>
+              <p>Ball: <strong id="score-points">0</strong> / 40</p>
+              <p>Qiyinlik koeffitsienti: <strong id="qiyinlik-koeff">1.0</strong></p>
+              <p>Umumiy ball: <strong id="total-score">0</strong></p>
+              <p>Vaqt: <strong id="time-taken">00:00</strong></p>
+            </div>
+          </div>
+
+          <div class="results-analysis">
+            <h3>📊 Tahlil</h3>
+            <div class="analysis-item">
+              <span class="label">To'g'ri javoblar:</span>
+              <div class="progress-bar">
+                <div class="progress-fill correct-bar" id="correct-bar" style="width: 0%"></div>
+              </div>
+              <span id="correct-percent">0%</span>
+            </div>
+            <div class="analysis-item">
+              <span class="label">Xato javoblar:</span>
+              <div class="progress-bar">
+                <div class="progress-fill incorrect-bar" id="incorrect-bar" style="width: 0%"></div>
+              </div>
+              <span id="incorrect-percent">0%</span>
+            </div>
+          </div>
+
+          <div class="results-message" id="results-message"></div>
+
+          <div class="results-actions">
+            <button class="action-btn restart-btn" onclick="restartTest()">
+              <span>🔄</span> Qayta ishlash
+            </button>
+            <button class="action-btn back-btn" onclick="backToTestSelection()">
+              <span>📚</span> Boshqa test
+            </button>
+            <button class="action-btn details-btn" onclick="showDetailedResults()">
+              <span>📋</span> Batafsil
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© 2026 41-Maktab. Barcha huquqlar himoyalangan.</p>
+      <address>
+        <p>👨‍💼 Direktor: Ziyayeva Ozodaxon</p>
+        <p>👨‍💻 Admin: Latifjonov Jalolmirzo</p>
+      </address>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/test-ai.js"></script>
+  <script src="js/test-new.js"></script>
+</body>
+</html>
