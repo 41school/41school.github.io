@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yangiliklar | 41-Maktab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .news-card.large {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #1a2a3a, #0f1a24);
+      color: white;
+    }
+
+    .news-card.large .news-body h3 {
+      color: #10a37f;
+      font-size: 28px;
+    }
+
+    .news-card.large .news-body p {
+      color: #cbd5e1;
+    }
+
+    .news-card.large .news-body time {
+      background: rgba(16, 163, 127, 0.2);
+      color: #10a37f;
+    }
+
+    .read-more-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 20px;
+      background: linear-gradient(135deg, #10a37f, #0f8c6b);
+      color: white;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .read-more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(16, 163, 127, 0.3);
+    }
+
+    .feature-list {
+      margin: 15px 0;
+      padding-left: 20px;
+    }
+
+    .feature-list li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .version-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #10a37f, #0f8c6b);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .future-plan {
+      background: rgba(16, 163, 127, 0.1);
+      border-left: 3px solid #10a37f;
+      padding: 12px 16px;
+      margin: 15px 0;
+      border-radius: 8px;
+    }
+
+    .warning-note {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 3px solid #f59e0b;
+      padding: 12px 16px;
+      margin: 15px 0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* RASM STILLARI - TO'LIQ KO'RINISH */
+    .news-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 20px 20px 0 0;
+      transition: transform 0.3s ease;
+      background: linear-gradient(135deg, #1e2a3a, #0f1a24);
+    }
+
+    .news-card.large img {
+      height: 280px;
+    }
+
+    .news-card:hover img {
+      transform: scale(1.02);
+    }
+
+    /* Rasm yuklanmasa placeholder */
+    .news-card img[src=""] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    body.dark .news-card.large {
+      background: linear-gradient(135deg, #1e2a3a, #0a121c);
+    }
+
+    @media (max-width: 768px) {
+      .news-card.large {
+        grid-column: span 1;
+      }
+      .news-card.large .news-body h3 {
+        font-size: 22px;
+      }
+      .news-card img {
+        height: 160px;
+      }
+      .news-card.large img {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50">
+        <div class="brand">
+          <h1>41-Maktab</h1>
+          <p>Bilim – kelajak kaliti</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <ul>
+          <li><a href="index.html">Asosiy</a></li>
+          <li><a href="yangiliklar.html" class="active">Yangiliklar</a></li>
+          <li><a href="loyihalar.html">Loyihalar</a></li>
+          <li><a href="testlar.html">Testlar</a></li>
+          <li><a href="kutubxona.html">Kutubxona</a></li>
+          <li><a href="malumot.html">Ma'lumot</a></li>
+          <li><a href="ai.html">AI</a></li>
+          <li><a href="aloqa.html">Aloqa</a></li>
+        </ul>
+      </nav>
+      <div class="nav-tools">
+        <input type="text" id="search-input" placeholder="Qidiruv..." class="search-box">
+        <button id="dark-mode-toggle" class="dark-btn">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <section class="page-title news-title">
+    <div class="container">
+      <h1>📢 Yangiliklar</h1>
+      <p>41-maktabdagi so'nggi yangiliklar, tadbirlar va e'lonlar</p>
+    </div>
+    <div class="floating-element"></div>
+  </section>
+
+  <!-- NEWS SECTION -->
+  <section class="news">
+    <div class="container news-grid">
+
+      <article class="news-card large">
+        <img src="images/ai-news.jpg" alt="Jalolmirzo AI" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%2310a37f\'%3E%3Cpath d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6z\'/%3E%3C/svg%3E'">
+        <div class="news-body">
+          <div class="version-badge">🚀 Yangi loyiha</div>
+          <h3>🤖 Jalolmirzo AI — Maktabning intellektual yordamchisi</h3>
+          <p>41-Maktab o'quvchilari uchun maxsus ishlab chiqilayotgan sun'iy intellekt tizimi ishga tushdi!</p>
+
+          <h4>✨ Hozirgi imkoniyatlar:</h4>
+          <ul class="feature-list">
+            <li>🔵 <strong>ODDIY rejim</strong> — 100 so'rov/kun, tezkor javob</li>
+            <li>🟣 <strong>PRO rejim</strong> — 25 so'rov/kun, kuchliroq model</li>
+            <li>💻 Kod so'ralganda chiroyli formatda ko'rsatish va copy tugmasi</li>
+            <li>⚡ 512 MB kesh tizimi — tez javoblar</li>
+            <li>📋 Chat tarixi saqlanadi, yangi suhbat boshlash imkoni</li>
+          </ul>
+
+          <h4>🔮 Yaratilish tarixi:</h4>
+          <p>Jalolmirzo AI — 41-Maktab admini <strong>Latifjonov Jalolmirzo</strong> tomonidan 2025-yilda yaratilgan. Dastlab oddiy API ulagich sifatida boshlangan loyiha, doimiy rivojlanish natijasida hozirda 2 xil rejim, kesh tizimi va 13 xil API kalit bilan ishlaydigan kuchli tizimga aylandi. Maqsad — maktab o'quvchilariga eng tez va sifatli AI xizmatini bepul taqdim etish.</p>
+
+          <h4>📈 Kelajakda yaratiladigan modellar va imkoniyatlar:</h4>
+          <ul class="feature-list">
+            <li>🎯 <strong>v1.5 (hozirgi)</strong> — 8 mlrd parametrli Llama 3.1 modeli, tezkor javob</li>
+            <li>🎯 <strong>v2.0</strong> — <strong>Qwen-3-235B-A22B-Instruct-2507</strong> (235 mlrd parametr) modeli qo'shiladi. PRO rejimda limitlar qisqaradi, ammo javob sifati keskin oshadi</li>
+            <li>🎯 <strong>v3.0</strong> — 70 mlrd parametrli <strong>o'zbek tilidagi maxsus model</strong> yaratiladi. Bu model o'zbek tilini mukammal tushunadi, ChatGPT va Gemini kabi uzluksiz suhbat olib boradi</li>
+            <li>🎯 <strong>v4.0</strong> — <strong>Multi-modal</strong> imkoniyat: rasm, document (PDF, Word), ovoz bilan ishlash. Rasmdagi matnni o'qish, hujjatlarni tahlil qilish</li>
+            <li>📊 <strong>Account tizimi</strong> — shaxsiy kabinet, limitlarni oshirish, reyting jadvali</li>
+            <li>🔗 <strong>Telegram bot integratsiyasi</strong> — AI bilan Telegram orqali ham suhbatlashish imkoniyati</li>
+          </ul>
+
+          <div class="future-plan">
+            <strong>🧠 Nega aynan shu modellar?</strong><br>
+            • <strong>8 mlrd parametr</strong> — hozirgi versiya, tezlik va sifat balansi<br>
+            • <strong>235 mlrd parametr (Qwen)</strong> — dunyodagi eng kuchli ochiq modellardan biri, murakkab masalalarni yechishda yuqori aniqlik<br>
+            • <strong>70 mlrd parametr (o'zbek modeli)</strong> — o'zbek tiliga maxsus moslashtirilgan, ChatGPT darajasida suhbat<br>
+            • <strong>Multi-modal</strong> — faqat matn emas, rasm va hujjatlar bilan ishlash
+          </div>
+
+          <div class="warning-note">
+            <strong>⚠️ Hozirgi kamchiliklar:</strong><br>
+            • Model 8 mlrd parametrli — o'zbek tilini to'liq tushunmaydi, ba'zi savollarga lug'aviy so'z xatolari bilan javob berishi mumkin<br>
+            • Chatda yozishmalar saqlanmaydi — har bir so'rovda qayta tushuntirish kerak<br>
+            • ChatGPT yoki Gemini kabi uzluksiz suhbat olib bora olmaydi<br>
+            • Rasm va hujjatlar bilan ishlash imkoniyati yo'q<br><br>
+            <strong>✅ Bu kamchiliklar keyingi versiyalarda to'liq bartaraf etiladi!</strong>
+          </div>
+
+          <h4>🎯 Maqsad:</h4>
+          <p>41-Maktab o'quvchilariga dunyodagi eng ilg'or AI texnologiyalarini bepul va qulay shaklda yetkazish. Kelajakda o'zbek tilida mukammal gaplashadigan, rasm va documentlar bilan ishlaydigan, har bir o'quvchiga moslashuvchan intellektual yordamchi yaratish.</p>
+
+          <div class="future-plan" style="background: rgba(16, 163, 127, 0.2);">
+            <strong>📢 Qoidalar va to'g'ri foydalanish:</strong><br>
+            • ODDIY rejim — kundalik savollar, testlar, uy vazifalari uchun<br>
+            • PRO rejim — murakkab masalalar, kod yozish, ilmiy savollar uchun<br>
+            • Har bir foydalanuvchi kunlik limitga ega (100/25 so'rov)<br>
+            • Limit tugagach, ertasi kuni qayta tiklanadi<br>
+            • Chat tarixi brauzer xotirasida saqlanadi, sahifa yopilganda ham qoladi
+          </div>
+
+          <a href="ai.html" class="read-more-btn">🤖 AI bilan suhbatlashish</a>
+          <time datetime="2026-03-24">📅 24-mart, 2026</time>
+        </div>
+      </article>
+
+      <!-- Yangilik 2: Kutubxona bo'limi -->
+      <article class="news-card">
+        <img src="images/library-news.jpg" alt="Kutubxona bo'limi" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%2310a37f\'%3E%3Cpath d=\'M4 6h16v2H4V6zm2-4h12v2H6V2zm16 8H2v12h20V10zm-2 10H4v-8h16v8z\'/%3E%3C/svg%3E'">
+        <div class="news-body">
+          <h3>📚 Kutubxona bo'limi ishga tushdi</h3>
+          <p>Maktab saytida kitoblar olamiga sayohat! Endi Google Books orqali millionlab kitoblarni qidirishingiz mumkin.</p>
+          <ul class="feature-list">
+            <li>🔍 Google Books API — istalgan kitobni qidirish</li>
+            <li>📖 100+ o'zbek kitobi ro'yxati (tez orada to'liq yuklab olish imkoniyati)</li>
+            <li>📂 Kitobni o'qish yoki yuklab olish</li>
+          </ul>
+          <p><strong>⚠️ Eslatma:</strong> Hozircha Google Books'da o'zbek kitoblari kam. 100+ o'zbek kitobini yuklab olish va o'qish uchun tayyor holatga keltirish ishlari olib borilmoqda.</p>
+          <a href="kutubxona.html" class="read-more-btn">📖 Kutubxonaga o'tish</a>
+          <time datetime="2026-03-20">📅 20-mart, 2026</time>
+        </div>
+      </article>
+
+      <!-- Yangilik 3: Ma'lumot (Wikipedia) bo'limi -->
+      <article class="news-card">
+        <img src="images/wiki-news.jpg" alt="Wikipedia ma'lumot" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%2310a37f\'%3E%3Cpath d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z\'/%3E%3C/svg%3E'">
+        <div class="news-body">
+          <h3>🌐 Ma'lumot bo'limi — Wikipedia integratsiyasi</h3>
+          <p>Endi sayt orqali to'g'ridan-to'g'ri Wikipedia'dan ma'lumot olishingiz mumkin!</p>
+          <ul class="feature-list">
+            <li>🔍 Tez va aniq qidiruv — O'zbekcha va Inglizcha Vikipediya</li>
+            <li>📄 Maqola nomi, qisqacha matn va rasm bilan chiqadi</li>
+            <li>🔗 To'liq o'qish uchun Vikipediya sahifasiga havola</li>
+          </ul>
+          <p><strong>📈 Kelajakda:</strong> Kontekst hajmi kengaytiriladi, ko'proq ma'lumot va manbalar qo'shiladi.</p>
+          <a href="malumot.html" class="read-more-btn">🔍 Ma'lumot olish</a>
+          <time datetime="2026-03-18">📅 18-mart, 2026</time>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© 2026 41-Maktab. Barcha huquqlar himoyalangan.</p>
+      <address>
+        <p>👨‍💼 Direktor: Ziyayeva Ozodaxon</p>
+        <p>👨‍💻 Admin: Latifjonov Jalolmirzo</p>
+      </address>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

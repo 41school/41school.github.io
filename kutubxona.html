@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kutubxona | 41-Maktab</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .library-section { padding: 60px 0; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); min-height: 80vh; }
+    .search-container { max-width: 600px; margin: 0 auto 40px; display: flex; gap: 15px; }
+    .search-container input { flex: 1; padding: 16px 24px; border: 2px solid #e2e8f0; border-radius: 50px; font-size: 16px; background: white; }
+    .search-container input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
+    .search-container button { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; border: none; padding: 0 32px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+    .search-container button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(37,99,235,0.4); }
+    .category-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+    .category-tab { background: white; border: 2px solid #e2e8f0; border-radius: 40px; padding: 10px 24px; font-size: 15px; font-weight: 600; color: #1e293b; cursor: pointer; transition: all 0.3s ease; }
+    .category-tab.active { background: linear-gradient(135deg, #2563eb, #7c3aed); border-color: transparent; color: white; }
+    .category-tab:hover:not(.active) { border-color: #2563eb; }
+    .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+    .book-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; }
+    .book-card:hover { transform: translateY(-5px); box-shadow: 0 20px 30px -10px rgba(37,99,235,0.2); }
+    .book-cover { width: 100%; height: 180px; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 48px; margin-bottom: 15px; overflow: hidden; }
+    .book-cover img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
+    .book-badge { display: inline-block; background: #e2e8f0; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-bottom: 10px; color: #475569; }
+    .book-title { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
+    .book-author { font-size: 14px; color: #64748b; margin-bottom: 12px; }
+    .book-year { font-size: 12px; color: #94a3b8; margin-bottom: 15px; }
+    .book-link { display: inline-block; background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; text-decoration: none; transition: all 0.3s ease; }
+    .book-link:hover { transform: translateY(-2px); }
+    .loading { text-align: center; padding: 60px; }
+    .loading-spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .empty-state { text-align: center; padding: 60px; background: white; border-radius: 20px; }
+    .empty-state-icon { font-size: 64px; margin-bottom: 20px; }
+    .retry-btn { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; border: none; padding: 12px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; margin-top: 20px; }
+    .search-source { text-align: center; font-size: 12px; color: #64748b; margin-top: 20px; padding: 8px; background: #f1f5f9; border-radius: 20px; display: inline-block; width: auto; margin: 10px auto; }
+    .source-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-left: 10px; }
+    .source-google { background: #2563eb; color: white; }
+    .source-local { background: #8b5cf6; color: white; }
+    body.dark .library-section { background: linear-gradient(135deg, #0f172a, #1e293b); }
+    body.dark .search-container input { background: #1e293b; border-color: #334155; color: #f1f5f9; }
+    body.dark .category-tab { background: #1e293b; border-color: #334155; color: #f1f5f9; }
+    body.dark .book-card { background: #1e293b; }
+    body.dark .book-title { color: #f1f5f9; }
+    body.dark .book-author, body.dark .book-year { color: #94a3b8; }
+    body.dark .empty-state { background: #1e293b; }
+    body.dark .book-badge { background: #334155; color: #cbd5e1; }
+    body.dark .search-source { background: #1e293b; color: #94a3b8; }
+    @media (max-width: 768px) { .search-container { flex-direction: column; } .search-container button { padding: 14px; } .books-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo"><img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50"><div class="brand"><h1>41-Maktab</h1><p>Bilim – kelajak kaliti</p></div></div>
+      <nav class="nav"><ul><li><a href="index.html">Asosiy</a></li><li><a href="yangiliklar.html">Yangiliklar</a></li><li><a href="loyihalar.html">Loyihalar</a></li><li><a href="testlar.html">Testlar</a></li><li><a href="kutubxona.html" class="active">Kutubxona</a></li><li><a href="ai.html">AI</a></li><li><a href="aloqa.html">Aloqa</a></li></ul></nav>
+      <div class="nav-tools"><input type="text" id="search-input" placeholder="Qidiruv..." class="search-box"><button id="dark-mode-toggle" class="dark-btn">🌙</button></div>
+    </div>
+  </header>
+  <main>
+    <section class="page-title library-title"><div class="container"><h1>📚 Kutubxona</h1><p>100+ o'zbek kitoblari tez orada  ishga tushadi | Google Books | Bepul va onlayn </p></div><div class="floating-element"></div></section>
+    <section class="library-section">
+      <div class="container">
+        <div class="search-container"><input type="text" id="book-search" placeholder="Kitob nomi yoki muallifni kiriting..."><button onclick="searchBooks()">🔍 Qidirish</button></div>
+        <div class="category-tabs"><button class="category-tab active" data-category="all" onclick="filterBooks('all')">📚 Barcha kitoblar</button><button class="category-tab" data-category="badiiy" onclick="filterBooks('badiiy')">🎭 Badiiy adabiyot</button><button class="category-tab" data-category="darslik" onclick="filterBooks('darslik')">📖 Darsliklar</button><button class="category-tab" data-category="tarixiy" onclick="filterBooks('tarixiy')">📜 Tarixiy asarlar</button><button class="category-tab" data-category="she'riy" onclick="filterBooks('she\'riy')">📝 She'riy to'plamlar</button></div>
+        <div id="books-container" class="books-grid"><div class="loading"><div class="loading-spinner"></div><p>📚 O'zbek kitoblari yuklanmoqda...</p></div></div>
+        <div id="search-source" class="search-source" style="text-align: center; margin-top: 20px;"></div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="container footer-inner"><p>© 2026 41-Maktab. Barcha huquqlar himoyalangan.</p><address><p>👨‍💼 Direktor: Ziyayeva Ozodaxon</p><p>👨‍💻 Admin: Latifjonov Jalolmirzo</p></address></div></footer>
+  <script src="js/main.js"></script>
+  <script>
+    let allBooks = [];
+    let currentCategory = 'all';
+    
+    // ========== 100+ O'ZBEK KITOBI ==========
+    const uzbekBooks = [
+      // === BADIIY ADABIYOT (1-40) ===
+      { id: 1, title: "O'tkan kunlar", author: "Abdulla Qodiriy", year: "1925", link: "https://kitob.uz/kitob/otkan-kunlar", thumbnail: null, category: "badiiy" },
+      { id: 2, title: "Mehrobdan chayon", author: "Abdulla Qodiriy", year: "1929", link: "https://kitob.uz/kitob/mehrobdan-chayon", thumbnail: null, category: "badiiy" },
+      { id: 3, title: "Alpomish", author: "Xalq dostoni", year: "XIV asr", link: "https://kitob.uz/kitob/alpomish", thumbnail: null, category: "badiiy" },
+      { id: 4, title: "Sarob", author: "Asqad Muxtor", year: "1964", link: "https://kitob.uz/kitob/sarob", thumbnail: null, category: "badiiy" },
+      { id: 5, title: "Shum bola", author: "G'afur G'ulom", year: "1936", link: "https://kitob.uz/kitob/shum-bola", thumbnail: null, category: "badiiy" },
+      { id: 6, title: "Tong yulduzi", author: "Oybek", year: "1933", link: "https://kitob.uz/kitob/tong-yulduzi", thumbnail: null, category: "badiiy" },
+      { id: 7, title: "Kecha va kunduz", author: "Cho'lpon", year: "1936", link: "https://kitob.uz/kitob/kecha-va-kunduz", thumbnail: null, category: "badiiy" },
+      { id: 8, title: "Yulduzli tunlar", author: "Pirimqul Qodirov", year: "1978", link: "https://kitob.uz/kitob/yulduzli-tunlar", thumbnail: null, category: "badiiy" },
+      { id: 9, title: "Oq kema", author: "Chingiz Aytmatov", year: "1970", link: "https://kitob.uz/kitob/oq-kema", thumbnail: null, category: "badiiy" },
+      { id: 10, title: "Dunyoning ishlari", author: "O'tkir Hoshimov", year: "1982", link: "https://kitob.uz/kitob/dunyoning-ishlari", thumbnail: null, category: "badiiy" },
+      { id: 11, title: "Ikki eshik orasi", author: "O'tkir Hoshimov", year: "1985", link: "https://kitob.uz/kitob/ikki-eshek-orasi", thumbnail: null, category: "badiiy" },
+      { id: 12, title: "Bahor qaytmaydi", author: "Said Ahmad", year: "1965", link: "https://kitob.uz/kitob/bahor-qaytmaydi", thumbnail: null, category: "badiiy" },
+      { id: 13, title: "Ufq", author: "Said Ahmad", year: "1972", link: "https://kitob.uz/kitob/ufq", thumbnail: null, category: "badiiy" },
+      { id: 14, title: "Qor qo'shig'i", author: "Erkin A'zam", year: "1980", link: "https://kitob.uz/kitob/qor-qoshigi", thumbnail: null, category: "badiiy" },
+      { id: 15, title: "Jannatga yo'l", author: "Tohir Malik", year: "1995", link: "https://kitob.uz/kitob/jannatga-yol", thumbnail: null, category: "badiiy" },
+      { id: 16, title: "Shaytanat", author: "Tohir Malik", year: "1992", link: "https://kitob.uz/kitob/shaytanat", thumbnail: null, category: "badiiy" },
+      { id: 17, title: "Odamlar", author: "Odil Yoqubov", year: "1970", link: "https://kitob.uz/kitob/odamlar", thumbnail: null, category: "badiiy" },
+      { id: 18, title: "Ulug'bek xazinasi", author: "Odil Yoqubov", year: "1975", link: "https://kitob.uz/kitob/ulugbek-xazinasi", thumbnail: null, category: "badiiy" },
+      { id: 19, title: "Qutlug' qon", author: "Odil Yoqubov", year: "1980", link: "https://kitob.uz/kitob/qutlug-qon", thumbnail: null, category: "badiiy" },
+      { id: 20, title: "Ming bir kun", author: "Mirmuhsin", year: "1970", link: "https://kitob.uz/kitob/ming-bir-kun", thumbnail: null, category: "badiiy" },
+      { id: 21, title: "Mehrob", author: "Mirmuhsin", year: "1985", link: "https://kitob.uz/kitob/mehrob", thumbnail: null, category: "badiiy" },
+      { id: 22, title: "O'jar", author: "Sobir Abdulla", year: "1960", link: "https://kitob.uz/kitob/ojar", thumbnail: null, category: "badiiy" },
+      { id: 23, title: "Qizil shar", author: "Sobir Abdulla", year: "1965", link: "https://kitob.uz/kitob/qizil-shar", thumbnail: null, category: "badiiy" },
+      { id: 24, title: "Yetti qirra", author: "Shukur Xolmirzayev", year: "1980", link: "https://kitob.uz/kitob/yetti-qirra", thumbnail: null, category: "badiiy" },
+      { id: 25, title: "So'nggi bekat", author: "Shukur Xolmirzayev", year: "1985", link: "https://kitob.uz/kitob/songgi-bekat", thumbnail: null, category: "badiiy" },
+      { id: 26, title: "Oq otli olam", author: "Erkin A'zam", year: "1985", link: "https://kitob.uz/kitob/oq-otli-olam", thumbnail: null, category: "badiiy" },
+      { id: 27, title: "Tobut", author: "Erkin A'zam", year: "1990", link: "https://kitob.uz/kitob/tobut", thumbnail: null, category: "badiiy" },
+      { id: 28, title: "O'rik gullaganda", author: "O'tkir Hoshimov", year: "1988", link: "https://kitob.uz/kitob/orik-gullaganda", thumbnail: null, category: "badiiy" },
+      { id: 29, title: "Dunyoning ishlari", author: "O'tkir Hoshimov", year: "1990", link: "https://kitob.uz/kitob/dunyoning-ishlari", thumbnail: null, category: "badiiy" },
+      { id: 30, title: "Quyosh charaqlab", author: "Said Ahmad", year: "1975", link: "https://kitob.uz/kitob/quyosh-charaqlab", thumbnail: null, category: "badiiy" },
+      { id: 31, title: "Jimjitlik", author: "Said Ahmad", year: "1980", link: "https://kitob.uz/kitob/jimjitlik", thumbnail: null, category: "badiiy" },
+      { id: 32, title: "Yorug'lik", author: "Tog'ay Murod", year: "1985", link: "https://kitob.uz/kitob/yoruglik", thumbnail: null, category: "badiiy" },
+      { id: 33, title: "Otamdan qolgan dalalar", author: "Tog'ay Murod", year: "1990", link: "https://kitob.uz/kitob/otamdan-qolgan-dalalar", thumbnail: null, category: "badiiy" },
+      { id: 34, title: "Baliqchi", author: "Xudoyberdi To'xtaboyev", year: "1980", link: "https://kitob.uz/kitob/baliqchi", thumbnail: null, category: "badiiy" },
+      { id: 35, title: "Sariq devni minib", author: "Xudoyberdi To'xtaboyev", year: "1985", link: "https://kitob.uz/kitob/sariq-devni-minib", thumbnail: null, category: "badiiy" },
+      { id: 36, title: "Jinlar bilan birga", author: "Xudoyberdi To'xtaboyev", year: "1990", link: "https://kitob.uz/kitob/jinlar-bilan-birga", thumbnail: null, category: "badiiy" },
+      { id: 37, title: "Mardlik", author: "Xudoyberdi To'xtaboyev", year: "1995", link: "https://kitob.uz/kitob/mardlik", thumbnail: null, category: "badiiy" },
+      { id: 38, title: "Yetti qirra", author: "Shukur Xolmirzayev", year: "1985", link: "https://kitob.uz/kitob/yetti-qirra", thumbnail: null, category: "badiiy" },
+      { id: 39, title: "Qor yog'moqda", author: "Tohir Malik", year: "1998", link: "https://kitob.uz/kitob/qor-yogmoqda", thumbnail: null, category: "badiiy" },
+      { id: 40, title: "Ko'ngil", author: "Tohir Malik", year: "2000", link: "https://kitob.uz/kitob/kongil", thumbnail: null, category: "badiiy" },
+      
+      // === DARSLIKLAR (41-65) ===
+      { id: 41, title: "Matematika 5-sinf", author: "T. Mirzayev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 42, title: "Ona tili 5-sinf", author: "S. Karimov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 43, title: "Adabiyot 5-sinf", author: "M. Hamroyev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 44, title: "Matematika 6-sinf", author: "T. Mirzayev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 45, title: "Ona tili 6-sinf", author: "S. Karimov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 46, title: "Adabiyot 6-sinf", author: "M. Hamroyev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 47, title: "Matematika 7-sinf", author: "T. Mirzayev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 48, title: "Fizika 7-sinf", author: "A. Raximov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 49, title: "Kimyo 7-sinf", author: "N. Ismailov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 50, title: "Biologiya 7-sinf", author: "S. Alimova", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 51, title: "Tarix 6-sinf", author: "Q. Rajabov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 52, title: "Ingliz tili 5-sinf", author: "G. Xoshimov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 53, title: "Ingliz tili 6-sinf", author: "G. Xoshimov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 54, title: "Geografiya 7-sinf", author: "R. Qurbonov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 55, title: "Informatika 7-sinf", author: "Sh. Mustafoqulov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 56, title: "Matematika 8-sinf", author: "T. Mirzayev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 57, title: "Fizika 8-sinf", author: "A. Raximov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 58, title: "Kimyo 8-sinf", author: "N. Ismailov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 59, title: "Biologiya 8-sinf", author: "S. Alimova", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 60, title: "Matematika 9-sinf", author: "T. Mirzayev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 61, title: "Fizika 9-sinf", author: "A. Raximov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 62, title: "Kimyo 9-sinf", author: "N. Ismailov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 63, title: "Biologiya 9-sinf", author: "S. Alimova", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 64, title: "Matematika 10-sinf", author: "T. Mirzayev", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      { id: 65, title: "Fizika 10-sinf", author: "A. Raximov", year: "2023", link: "#", thumbnail: null, category: "darslik" },
+      
+      // === TARIXIY ASARLAR (66-85) ===
+      { id: 66, title: "Temur tuzuklari", author: "Amir Temur", year: "XIV asr", link: "https://kitob.uz/kitob/temur-tuzuklari", thumbnail: null, category: "tarixiy" },
+      { id: 67, title: "Boburnoma", author: "Zahiriddin Muhammad Bobur", year: "XVI asr", link: "https://kitob.uz/kitob/boburnoma", thumbnail: null, category: "tarixiy" },
+      { id: 68, title: "O'zbekiston tarixi", author: "R. Abdullayev", year: "2020", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 69, title: "Samarqand tarixi", author: "M. Ismoilov", year: "2018", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 70, title: "Buxoro tarixi", author: "N. To'rayev", year: "2019", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 71, title: "Xorazm tarixi", author: "A. Qodirov", year: "2019", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 72, title: "Farg'ona vodiysi tarixi", author: "M. Xolmatov", year: "2020", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 73, title: "Toshkent tarixi", author: "S. To'rayev", year: "2020", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 74, title: "Movarounnahr tarixi", author: "N. To'xtayev", year: "2018", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 75, title: "Amir Temur", author: "Pirimqul Qodirov", year: "1978", link: "https://kitob.uz/kitob/amir-temur", thumbnail: null, category: "tarixiy" },
+      { id: 76, title: "Jaloliddin Manguberdi", author: "Pirimqul Qodirov", year: "1980", link: "https://kitob.uz/kitob/jaloliddin-manguberdi", thumbnail: null, category: "tarixiy" },
+      { id: 77, title: "Mirzo Ulug'bek", author: "M. Osim", year: "1965", link: "https://kitob.uz/kitob/mirzo-ulugbek", thumbnail: null, category: "tarixiy" },
+      { id: 78, title: "Alisher Navoiy", author: "Oybek", year: "1948", link: "https://kitob.uz/kitob/alisher-navoiy", thumbnail: null, category: "tarixiy" },
+      { id: 79, title: "Beruniy", author: "M. Osim", year: "1960", link: "https://kitob.uz/kitob/beruniy", thumbnail: null, category: "tarixiy" },
+      { id: 80, title: "Al-Xorazmiy", author: "M. Osim", year: "1962", link: "https://kitob.uz/kitob/al-xorazmiy", thumbnail: null, category: "tarixiy" },
+      { id: 81, title: "Muhammad al-Xorazmiy", author: "A. Ahmedov", year: "2000", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 82, title: "Ahmad al-Farg'oniy", author: "A. Qodirov", year: "2005", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 83, title: "Imom Buxoriy", author: "N. Qosimov", year: "2010", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 84, title: "Abu Rayhon Beruniy", author: "U. Karimov", year: "2012", link: "#", thumbnail: null, category: "tarixiy" },
+      { id: 85, title: "Mahmud Qoshg'ariy", author: "B. To'rayev", year: "2015", link: "#", thumbnail: null, category: "tarixiy" },
+      
+      // === SHE'RIY TO'PLAMLAR (86-100) ===
+      { id: 86, title: "Xamsa", author: "Alisher Navoiy", year: "XV asr", link: "https://kitob.uz/kitob/xamsa", thumbnail: null, category: "she'riy" },
+      { id: 87, title: "Lison ut-tayr", author: "Alisher Navoiy", year: "XV asr", link: "https://kitob.uz/kitob/lison-ut-tayr", thumbnail: null, category: "she'riy" },
+      { id: 88, title: "Devoni Bobur", author: "Zahiriddin Muhammad Bobur", year: "XVI asr", link: "https://kitob.uz/kitob/devoni-bobur", thumbnail: null, category: "she'riy" },
+      { id: 89, title: "Devoni Mashrab", author: "Boborahim Mashrab", year: "XVII asr", link: "https://kitob.uz/kitob/devoni-mashrab", thumbnail: null, category: "she'riy" },
+      { id: 90, title: "Gul va navo", author: "Zulfiya", year: "1971", link: "https://kitob.uz/kitob/gul-va-navo", thumbnail: null, category: "she'riy" },
+      { id: 91, title: "O'zbek she'riyati antologiyasi", author: "Turli shoirlar", year: "2000", link: "#", thumbnail: null, category: "she'riy" },
+      { id: 92, title: "Muhabbatnoma", author: "Erkin Vohidov", year: "1975", link: "https://kitob.uz/kitob/muhabbatnoma", thumbnail: null, category: "she'riy" },
+      { id: 93, title: "O'zbegim", author: "Erkin Vohidov", year: "1980", link: "https://kitob.uz/kitob/ozbegim", thumbnail: null, category: "she'riy" },
+      { id: 94, title: "Tong", author: "Abdulla Oripov", year: "1965", link: "https://kitob.uz/kitob/tong", thumbnail: null, category: "she'riy" },
+      { id: 95, title: "Jannatga yo'l", author: "Abdulla Oripov", year: "1970", link: "https://kitob.uz/kitob/jannatga-yol", thumbnail: null, category: "she'riy" },
+      { id: 96, title: "Yurak", author: "Rauf Parfi", year: "1975", link: "https://kitob.uz/kitob/yurak", thumbnail: null, category: "she'riy" },
+      { id: 97, title: "Mangu", author: "Rauf Parfi", year: "1980", link: "https://kitob.uz/kitob/mangu", thumbnail: null, category: "she'riy" },
+      { id: 98, title: "Sadoqat", author: "Muhammad Yusuf", year: "1985", link: "https://kitob.uz/kitob/sadoqat", thumbnail: null, category: "she'riy" },
+      { id: 99, title: "Bog'bon", author: "Muhammad Yusuf", year: "1990", link: "https://kitob.uz/kitob/bogbon", thumbnail: null, category: "she'riy" },
+      { id: 100, title: "O'zbek lirikasi", author: "Turli shoirlar", year: "1995", link: "#", thumbnail: null, category: "she'riy" }
+    ];
+    
+    function getCategoryIcon(category) {
+      if (category === 'badiiy') return '🎭';
+      if (category === 'darslik') return '📖';
+      if (category === 'tarixiy') return '📜';
+      if (category === 'she\'riy') return '📝';
+      return '📚';
+    }
+    
+    function getCategoryName(category) {
+      if (category === 'badiiy') return 'Badiiy adabiyot';
+      if (category === 'darslik') return 'Darslik';
+      if (category === 'tarixiy') return 'Tarixiy asar';
+      if (category === 'she\'riy') return 'She\'riy to\'plam';
+      return 'Kitob';
+    }
+    
+    function showSource(source) {
+      const sourceDiv = document.getElementById('search-source');
+      if (source === 'google') {
+        sourceDiv.innerHTML = '<span class="source-badge source-google">🌐 Google Books</span> dan qidirildi';
+      } else {
+        sourceDiv.innerHTML = '<span class="source-badge source-local">📚 O\'zbek kutubxonasi (100+ kitob)</span>';
+      }
+    }
+    
+    function showNotification(msg, type = 'info') {
+      const container = document.getElementById('books-container');
+      const notification = document.createElement('div');
+      notification.className = 'empty-state';
+      notification.style.marginBottom = '20px';
+      notification.style.padding = '15px';
+      notification.style.background = type === 'warning' ? '#fef3c7' : type === 'success' ? '#d1fae5' : '#dbeafe';
+      notification.style.color = '#1e293b';
+      notification.style.borderRadius = '12px';
+      notification.innerHTML = `<p>📌 ${msg}</p>`;
+      container.prepend(notification);
+      setTimeout(() => notification.remove(), 3000);
+    }
+    
+    // Google Books dan qidirish
+    async function searchGoogleBooks(query) {
+      try {
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20`);
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+          return data.items.map(item => ({
+            id: 'g_' + item.id,
+            title: item.volumeInfo.title || 'Noma\'lum',
+            author: item.volumeInfo.authors ? item.volumeInfo.authors.join(', ') : 'Noma\'lum muallif',
+            year: item.volumeInfo.publishedDate ? item.volumeInfo.publishedDate.substring(0,4) : 'Noma\'lum',
+            link: item.volumeInfo.previewLink || '#',
+            thumbnail: item.volumeInfo.imageLinks?.thumbnail || null,
+            category: 'umumiy',
+            source: 'google'
+          }));
+        }
+      } catch (e) { console.log('Google Books API xatosi:', e); }
+      return null;
+    }
+    
+    // Asosiy qidiruv
+    async function searchBooks() {
+      const query = document.getElementById('book-search').value.trim();
+      if (!query) {
+        loadDefaultBooks();
+        return;
+      }
+      
+      const container = document.getElementById('books-container');
+      container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>🔍 Qidirilmoqda...</p></div>';
+      
+      // 1-bosqich: O'zbek kitoblaridan qidirish
+      const localResults = uzbekBooks.filter(book => 
+        book.title.toLowerCase().includes(query.toLowerCase()) || 
+        book.author.toLowerCase().includes(query.toLowerCase())
+      );
+      
+      if (localResults.length > 0) {
+        allBooks = localResults;
+        displayBooks(allBooks);
+        showSource('local');
+        showNotification(`${localResults.length} ta kitob topildi`, 'success');
+        return;
+      }
+      
+      // 2-bosqich: Google Books
+      const googleResults = await searchGoogleBooks(query);
+      if (googleResults && googleResults.length > 0) {
+        allBooks = googleResults;
+        displayBooks(allBooks);
+        showSource('google');
+        showNotification(`${googleResults.length} ta kitob topildi (Google Books)`, 'success');
+        return;
+      }
+      
+      // Topilmasa
+      allBooks = uzbekBooks;
+      displayBooks(uzbekBooks);
+      showSource('local');
+      showNotification(`"${query}" bo'yicha kitob topilmadi. Barcha kitoblar:`, 'info');
+    }
+    
+    function displayBooks(books) {
+      const container = document.getElementById('books-container');
+      let filteredBooks = currentCategory === 'all' ? books : books.filter(b => b.category === currentCategory);
+      
+      if (filteredBooks.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📚</div><h3>Bu kategoriyada kitoblar yo'q</h3><button class="retry-btn" onclick="filterBooks('all')">📚 Barcha kitoblar</button></div>`;
+        return;
+      }
+      
+      container.innerHTML = filteredBooks.map(book => {
+        const hasImage = book.thumbnail && book.thumbnail.startsWith('http');
+        return `
+          <div class="book-card">
+            <div class="book-cover">${hasImage ? `<img src="${book.thumbnail}" alt="${book.title}">` : getCategoryIcon(book.category)}</div>
+            <div class="book-badge">${getCategoryName(book.category)}</div>
+            <div class="book-title">${book.title}</div>
+            <div class="book-author">✍️ ${book.author}</div>
+            <div class="book-year">📅 ${book.year}</div>
+            <a href="${book.link}" target="_blank" class="book-link">📖 O'qish / Yuklab olish</a>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    function filterBooks(category) {
+      currentCategory = category;
+      document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.dataset.category === category) tab.classList.add('active');
+      });
+      if (allBooks.length > 0) displayBooks(allBooks);
+      else loadDefaultBooks();
+    }
+    
+    function loadDefaultBooks() {
+      const container = document.getElementById('books-container');
+      container.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>📚 O\'zbek kitoblari yuklanmoqda...</p></div>';
+      setTimeout(() => { 
+        allBooks = [...uzbekBooks]; 
+        displayBooks(allBooks);
+        showSource('local');
+      }, 500);
+    }
+    
+    document.getElementById('book-search')?.addEventListener('keypress', e => { if (e.key === 'Enter') searchBooks(); });
+    document.addEventListener('DOMContentLoaded', () => loadDefaultBooks());
+  </script>
+</body>
+</html>

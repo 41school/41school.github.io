@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>41-Maktab | Bosh sahifa</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50">
+        <div class="brand">
+          <h1>41-Maktab</h1>
+          <p>Bilim – kelajak kaliti</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <ul>
+          <li><a href="index.html" class="active" aria-current="page">Asosiy</a></li>
+          <li><a href="yangiliklar.html">Yangiliklar</a></li>
+          <li><a href="loyihalar.html">Loyihalar</a></li>
+          <li><a href="testlar.html">Testlar</a></li>
+          <li><a href="kutubxona.html">Kutubxona</a></li>
+          <li><a href="ai.html">AI</a></li>
+          <li><a href="aloqa.html">Aloqa</a></li>
+        </ul>
+      </nav>
+
+      <!-- 🔍 Qidiruv va 🌙 Dark Mode tugmalari -->
+      <div class="nav-tools">
+        <input type="text" id="search-input" placeholder="Qidiruv..." class="search-box" aria-label="Sayt bo'yicha qidiruv">
+        <button id="dark-mode-toggle" class="dark-btn" aria-label="Qorong'u rejimni yoqish/o'chirish">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN content area -->
+  <main>
+    <!-- HERO / BANNER -->
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <p class="hero-location">Farg‘ona viloyati, Bag‘dod tumani</p>
+          <h1>41-Maktabga xush kelibsiz!</h1>
+          <p>Bu yerda har bir o‘quvchi bilim sari ishonch bilan qadam qo‘yadi.</p>
+          <a href="yangiliklar.html" class="btn">Yangiliklarni ko‘rish</a>
+        </div>
+        <div class="hero-img">
+          <!-- Hero sectiondagi rasmni maktab binosi yoki o'quvchilar rasmi bilan almashtirish tavsiya etiladi -->
+          <img src="images/logo.png" alt="Maktab logotipi" width="300" height="300">
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about">
+      <div class="container">
+        <h2>Biz haqimizda</h2>
+        <p>
+          41-maktab — Bag‘dod tumanidagi zamonaviy ta’lim muassasasi bo‘lib, 
+          o‘quvchilarga yuqori sifatli bilim berishni o‘z oldiga maqsad qilgan. 
+          Bizning shiorimiz: <strong>“Bilim – kelajak kaliti!”</strong>
+        </p>
+      </div>
+    </section>
+
+<!-- 📋 DARS JADVALI -->
+<section class="schedule" id="jadval">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">📅 Dars jadvali</h2>
+      <p class="section-description">Sinfingizni tanlang va haftalik dars jadvali bilan tanishing</p>
+    </div>
+
+<!-- Sinf tanlash -->
+<div class="class-selector">
+  <div class="selector-label">
+    <span class="label-icon">📚</span>
+    <span>Sinfingizni tanlang:</span>
+  </div>
+  
+  <div class="class-buttons">
+    <button class="class-btn active" data-class="5" onclick="showSchedule('5')">5-sinf</button>
+    <button class="class-btn" data-class="6a" onclick="showSchedule('6a')">6-A sinf</button>
+    <button class="class-btn" data-class="6b" onclick="showSchedule('6b')">6-B sinf</button>
+    <button class="class-btn" data-class="7a" onclick="showSchedule('7a')">7-A sinf</button>
+    <button class="class-btn" data-class="7b" onclick="showSchedule('7b')">7-B sinf</button>
+    <button class="class-btn" data-class="8a" onclick="showSchedule('8a')">8-A sinf</button>
+    <button class="class-btn" data-class="8b" onclick="showSchedule('8b')">8-B sinf</button>
+    <button class="class-btn" data-class="9a" onclick="showSchedule('9a')">9-A sinf</button>
+    <button class="class-btn" data-class="9b" onclick="showSchedule('9b')">9-B sinf</button>
+    <button class="class-btn" data-class="10a" onclick="showSchedule('10a')">10-A sinf</button>
+  </div>
+</div>
+
+    <!-- Jadval konteyneri -->
+    <div class="schedule-container" id="schedule-container">
+      <!-- Jadval shu yerga yuklanadi -->
+    </div>
+
+    <!-- Qo'shimcha ma'lumot -->
+    <div class="schedule-footer">
+      <div class="info-item">
+        <span class="info-icon">⏰</span>
+        <span>Darslar 45 daqiqa</span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📌</span>
+        <span>Tanaffus 5 daqiqa</span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📅</span>
+        <span>6 kunlik hafta</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© 2026 41-Maktab. Barcha huquqlar himoyalangan.</p>
+      <address>
+        <p>👨‍💼 Direktor: Ziyayeva Ozodaxon</p>
+        <p>👨‍💻 Admin: Latifjonov Jalolmirzo</p>
+      </address>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
