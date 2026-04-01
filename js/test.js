@@ -2,14 +2,17 @@
 // TEST.JS - 20 SAVOL, 35 DAKIKA
 // ============================================
 
-// QIYINLIK_KOEFF test-ai.js da bor, qayta e'lon qilmaymiz
-// Agar yo'q bo'lsa ishlatish uchun
-if (typeof QIYINLIK_KOEFF === 'undefined') {
-  var QIYINLIK_KOEFF = {
+// QIYINLIK_KOEFF test-ai.js da e'lon qilingan, shuning uchun qayta e'lon qilmaymiz
+// Faqat mavjudligini tekshiramiz
+if (typeof window.QIYINLIK_KOEFF === 'undefined') {
+  window.QIYINLIK_KOEFF = {
     "5": 1.0, "6a": 1.2, "6b": 1.2, "7a": 1.5, "7b": 1.5,
     "8a": 1.8, "8b": 1.8, "9a": 2.0, "9b": 2.0, "10a": 2.2
   };
 }
+
+// Qulaylik uchun o'zgaruvchi
+const QIYINLIK_KOEFF = window.QIYINLIK_KOEFF;
 
 let currentClass = "5";
 let currentSubject = null;
@@ -46,13 +49,12 @@ window.selectTestClass = function(classNum) {
   loadSubjects(classNum);
 };
 
-// FANLARNI YUKLASH
+// FANLARNI YUKLASH (faqat kartochkalar, testlar yuklanmaydi)
 async function loadSubjects(classNum) {
   const grid = document.getElementById('subjects-grid');
   if (!grid) return;
   
-  grid.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Testlar yuklanmoqda...</p></div>';
-  
+  // To'g'ridan-to'g'ri kartochkalarni ko'rsatish (yuklanayapti deb yozmaymiz)
   const allFans = [
     { nom: "matematika", ozbekcha: "Matematika", icon: "🔢" },
     { nom: "ona-tili", ozbekcha: "Ona tili", icon: "📖" },
@@ -185,6 +187,27 @@ function generateQuestions(fan, sinf) {
     ];
     const answers = [["28","29","30","31"], ["5","6","7","8"], ["kichik","katta","qalin","yog'on"], ["4","5","6","7"], ["gap boshida","gap oxirida","o'rtasida","hech qayerda"]];
     const corrects = [1,1,1,1,1];
+    for (let i = 0; i < 20; i++) {
+      const idx = i % base.length;
+      questions.push({
+        savol: base[idx],
+        variantlar: answers[idx],
+        togri: corrects[idx],
+        ball: 2
+      });
+    }
+  }
+  else if (fan === "rus-tili") {
+    const base = [
+      "Сколько букв в русском алфавите?", "Как сказать 'Привет' по-узбекски?",
+      "Что означает 'Книга'?", "Как будет 'Дом' на узбекском?", "Как сказать 'Спасибо'?"
+    ];
+    const answers = [
+      ["32","33","34","35"], ["Salom","Xayr","Rahmat","Kechirasiz"],
+      ["Daftar","Qalam","Kitob","Ruchka"], ["Uy","Maktab","Bog'","Do'kon"],
+      ["Rahmat","Salom","Xayr","Kechirasiz"]
+    ];
+    const corrects = [1,0,2,0,0];
     for (let i = 0; i < 20; i++) {
       const idx = i % base.length;
       questions.push({
