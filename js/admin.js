@@ -3,10 +3,11 @@
 // ============================================
 
 const ADMIN_PASSWORD = "01170310";
-const ACTIVE_TESTS_COUNT = 20; // 30 emas, 20 ta!
+const ACTIVE_TESTS_COUNT = 20;
 
 let isAdminLoggedIn = false;
 
+// ============ LOGIN ============
 function checkAdminLogin() {
   const password = document.getElementById('adminPassword').value;
   if (password === ADMIN_PASSWORD) {
@@ -27,36 +28,51 @@ function logout() {
   document.getElementById('adminPassword').value = '';
 }
 
+// ============ STATISTIKA ============
 async function loadAdminStats() {
   if (typeof db === 'undefined') return;
   await db.open();
   
-  const oquvchilarStore = db.db.transaction("oquvchilar", "readonly").objectStore("oquvchilar");
-  const oquvchilarCount = await new Promise(resolve => {
-    const req = oquvchilarStore.count();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => resolve(0);
-  });
-  
-  const testsStore = db.db.transaction("tests", "readonly").objectStore("tests");
-  const testsCount = await new Promise(resolve => {
-    const req = testsStore.count();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => resolve(0);
-  });
-  
-  const natijalarStore = db.db.transaction("natijalar", "readonly").objectStore("natijalar");
-  const natijalarCount = await new Promise(resolve => {
-    const req = natijalarStore.count();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => resolve(0);
-  });
-  
-  document.getElementById('statStudents').innerHTML = oquvchilarCount;
-  document.getElementById('statTests').innerHTML = testsCount;
-  document.getElementById('statResults').innerHTML = natijalarCount;
+  try {
+    const oquvchilarStore = db.db.transaction("oquvchilar", "readonly").objectStore("oquvchilar");
+    const oquvchilarCount = await new Promise(resolve => {
+      const req = oquvchilarStore.count();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(0);
+    });
+    
+    const testsStore = db.db.transaction("tests", "readonly").objectStore("tests");
+    const testsCount = await new Promise(resolve => {
+      const req = testsStore.count();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(0);
+    });
+    
+    const natijalarStore = db.db.transaction("natijalar", "readonly").objectStore("natijalar");
+    const natijalarCount = await new Promise(resolve => {
+      const req = natijalarStore.count();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(0);
+    });
+    
+    // Faol testlar sonini hisoblash
+    const allTests = await new Promise(resolve => {
+      const req = testsStore.getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve([]);
+    });
+    const activeTestsCount = allTests.filter(t => t.aktiv === true).length;
+    
+    document.getElementById('statStudents').innerHTML = oquvchilarCount;
+    document.getElementById('statTests').innerHTML = testsCount;
+    document.getElementById('statResults').innerHTML = natijalarCount;
+    document.getElementById('statActiveTests').innerHTML = activeTestsCount;
+  } catch(e) {
+    console.error("Statistika yuklashda xatolik:", e);
+  }
 }
 
+// ============ AI TEST YARATISH ============
 async function generateAITests() {
   const sinf = document.getElementById('aiSinf').value;
   const fan = document.getElementById('aiFan').value;
@@ -67,7 +83,7 @@ async function generateAITests() {
   const progressText = document.getElementById('aiProgressText');
   
   logDiv.style.display = 'block';
-  logDiv.innerHTML = '🚀 Test yaratish boshlandi (Groq API - tez)...\n';
+  logDiv.innerHTML = '🚀 Test yaratish boshlandi (Groq API)...\n';
   progressFill.style.width = '0%';
   
   for (let i = 1; i <= count; i++) {
@@ -76,13 +92,12 @@ async function generateAITests() {
     logDiv.innerHTML += `📝 Test ${i} yaratilmoqda...\n`;
     logDiv.scrollTop = logDiv.scrollHeight;
     
-    const test = await aiTestGenerator.createSingleTest(sinf, fan, i);
-    
     try {
+      const test = await aiTestGenerator.createSingleTest(sinf, fan, i);
       await db.addTest(test);
       logDiv.innerHTML += `✅ Test ${i} saqlandi\n`;
     } catch (err) {
-      logDiv.innerHTML += `❌ Test ${i} saqlashda xatolik: ${err.message}\n`;
+      logDiv.innerHTML += `❌ Test ${i} xatolik: ${err.message}\n`;
     }
     
     logDiv.scrollTop = logDiv.scrollHeight;
@@ -90,12 +105,39 @@ async function generateAITests() {
   
   progressText.innerHTML = `✅ ${count} ta test yaratildi!`;
   progressFill.style.width = '100%';
-  logDiv.innerHTML += `\n🎉 Barcha ${count} ta test yaratildi va saqlandi!\n`;
+  logDiv.innerHTML += `\n🎉 Barcha ${count} ta test yaratildi!\n`;
   
   loadAdminStats();
   loadActiveTestsList();
 }
 
+// ============ KOMBINATSION TEST ============
+async function generateKombinatsionTests() {
+  const sinflar = ["5", "6a", "6b", "7a", "7b", "8a", "8b", "9a", "9b", "10a"];
+  const progressFill = document.getElementById('kombProgressFill');
+  const progressText = document.getElementById('kombProgressText');
+  
+  if (progressFill) progressFill.style.width = '0%';
+  
+  for (let i = 0; i < sinflar.length; i++) {
+    const sinf = sinflar[i];
+    if (progressText) progressText.innerHTML = `${sinf}-sinf kombinatsion test yaratilmoqda...`;
+    if (progressFill) progressFill.style.width = `${((i + 1) / sinflar.length) * 100}%`;
+    
+    try {
+      const test = await kombinatsionGenerator.createKombinatsionTest(sinf);
+      await db.addTest(test);
+    } catch (err) {
+      console.error("Xatolik:", err);
+    }
+  }
+  
+  if (progressText) progressText.innerHTML = `✅ Barcha kombinatsion testlar yaratildi!`;
+  loadAdminStats();
+  loadActiveTestsList();
+}
+
+// ============ FAOL TESTLARNI BOSHQARISH ============
 async function randomizeActiveTests() {
   const sinf = document.getElementById('activeSinf').value;
   const fan = document.getElementById('activeFan').value;
@@ -111,6 +153,7 @@ async function randomizeActiveTests() {
   
   alert(`✅ ${sinf} - ${fan} uchun ${selectedTests.length} ta test random tanlandi va faollashtirildi!`);
   loadActiveTestsList();
+  loadAdminStats();
 }
 
 async function loadActiveTestsList() {
@@ -121,22 +164,25 @@ async function loadActiveTestsList() {
   const allTests = await aiTestGenerator.getAllTestsForSubject(sinf, fan);
   
   if (allTests.length === 0) {
-    container.innerHTML = '<p class="text-muted">Testlar topilmadi. Avval test yarating!</p>';
+    container.innerHTML = '<div style="padding: 20px; text-align: center;">📭 Testlar topilmadi. Avval test yarating!</div>';
     return;
   }
   
   // Faol testlarni hisoblash
   const activeTests = allTests.filter(t => t.aktiv === true);
   
-  let html = `<p><strong>📊 Faol testlar: ${activeTests.length} / ${ACTIVE_TESTS_COUNT}</strong></p>`;
+  let html = `<div style="padding: 10px; background: #e0f2fe; border-radius: 10px; margin-bottom: 10px;">
+    <strong>📊 Holat:</strong> ${activeTests.length} / ${ACTIVE_TESTS_COUNT} ta test faol
+  </div>`;
   
-  for (let test of allTests.slice(0, 50)) { // 50 ta testni ko'rsatish
+  for (let test of allTests) {
     const isActive = test.aktiv === true;
     html += `
       <div class="test-item ${isActive ? 'active' : ''}">
-        <span>${test.nom}</span>
-        <button class="toggle-active" onclick="toggleTestActive('${test.id}', ${!isActive})">
-          ${isActive ? '✅ Faol' : '⬜ Faol emas'}
+        <span class="test-name">${test.nom}</span>
+        <span class="test-status ${isActive ? 'status-active' : 'status-inactive'}">${isActive ? '✅ Faol' : '⬜ Faol emas'}</span>
+        <button class="toggle-btn" onclick="toggleTestActive('${test.id}', ${!isActive})">
+          ${isActive ? '❌ O\'chirish' : '✅ Faol qilish'}
         </button>
       </div>
     `;
@@ -159,9 +205,11 @@ async function toggleTestActive(testId, aktiv) {
       req.onsuccess = () => resolve();
     });
     loadActiveTestsList();
+    loadAdminStats();
   }
 }
 
+// ============ MA'LUMOTLARNI BOSHQARISH ============
 async function clearAllData() {
   if (!confirm('⚠️ BARCHA MA\'LUMOTLAR O\'CHIRILADI! Davom etasizmi?')) return;
   
@@ -231,30 +279,7 @@ async function importData(input) {
   reader.readAsText(file);
 }
 
-async function generateKombinatsionTests() {
-  const sinflar = ["5", "6a", "6b", "7a", "7b", "8a", "8b", "9a", "9b", "10a"];
-  const progressFill = document.getElementById('kombProgressFill');
-  const progressText = document.getElementById('kombProgressText');
-  
-  progressFill.style.width = '0%';
-  
-  for (let i = 0; i < sinflar.length; i++) {
-    const sinf = sinflar[i];
-    progressText.innerHTML = `${sinf}-sinf kombinatsion test yaratilmoqda...`;
-    progressFill.style.width = `${((i + 1) / sinflar.length) * 100}%`;
-    
-    const test = await kombinatsionGenerator.createKombinatsionTest(sinf);
-    try {
-      await db.addTest(test);
-    } catch (err) {
-      console.error("Xatolik:", err);
-    }
-  }
-  
-  progressText.innerHTML = `✅ Barcha kombinatsion testlar yaratildi!`;
-  loadAdminStats();
-}
-
+// ============ SAHIFA YUKLANGANDA ============
 document.addEventListener('DOMContentLoaded', async function() {
   if (typeof db !== 'undefined') {
     await db.open();
