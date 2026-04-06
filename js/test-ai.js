@@ -4,7 +4,7 @@
 
 // Groq API kalitlari (sizda bor)
 const GROQ_API_KEYS = [
-    "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",
+    "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",
     "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",
     "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",
     "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"
