@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <title>Jalolmirzo AI | Maktab Yordamchisi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -22,9 +22,14 @@
             letter-spacing: normal;
             word-spacing: normal;
             line-height: 1.5;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
         
-        .app { display: flex; height: 100vh; position: relative; }
+        .app { display: flex; height: 100%; width: 100%; position: relative; }
         
         /* ========== SIDEBAR ========== */
         .sidebar { width: 280px; background: #0f0f0f; border-right: 1px solid #1f1f1f; display: flex; flex-direction: column; flex-shrink: 0; transition: transform 0.3s ease; z-index: 100; }
@@ -67,18 +72,44 @@
         .sidebar-footer { padding: 16px; border-top: 1px solid #1f1f1f; font-size: 11px; color: #6b6b6b; text-align: center; }
         
         /* ========== MAIN CHAT ========== */
-        .main-chat { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #0a0a0a; }
-        .chat-header { padding: 16px 24px; border-bottom: 1px solid #1f1f1f; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; }
+        .main-chat { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+            background: #0a0a0a; 
+            height: 100%;
+            overflow: hidden;
+        }
+        .chat-header { 
+            padding: 16px 24px; 
+            border-bottom: 1px solid #1f1f1f; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #0a0a0a;
+            flex-shrink: 0;
+        }
         .header-left { display: flex; align-items: center; gap: 16px; }
         .logo { font-size: 20px; font-weight: 600; background: linear-gradient(135deg, #10a37f, #4d6bfe); -webkit-background-clip: text; background-clip: text; color: transparent; cursor: pointer; }
         .status-indicator { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6b6b6b; }
         .status-dot { width: 8px; height: 8px; background: #10a37f; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
-        .messages-container { flex: 1; overflow-y: auto; scroll-behavior: smooth; }
-        .messages-inner { max-width: 800px; margin: 0 auto; padding: 24px; }
         
-        /* Xabar stillari - VAQT YO'Q */
-        .message { display: flex; margin-bottom: 24px; animation: fadeInUp 0.3s ease; }
+        .messages-container { 
+            flex: 1; 
+            overflow-y: auto; 
+            scroll-behavior: smooth;
+            min-height: 0;
+        }
+        .messages-inner { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px 24px;
+        }
+        
+        /* Xabar stillari */
+        .message { display: flex; margin-bottom: 20px; animation: fadeInUp 0.3s ease; }
         .message.user { justify-content: flex-end; }
         .message.ai { justify-content: flex-start; }
         
@@ -92,40 +123,36 @@
             white-space: normal;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            letter-spacing: normal;
-            word-spacing: normal;
         }
         .message.user .message-bubble { background: linear-gradient(135deg, #10a37f, #0f8c6b); color: white; border-bottom-right-radius: 4px; }
         .message.ai .message-bubble { background: #1a1a1a; color: #e8eaed; border-bottom-left-radius: 4px; }
         
-        /* Copy tugmasi - AI javoblarida */
         .message-actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .copy-msg-btn {
             background: #2a2a2a;
             border: none;
             cursor: pointer;
-            padding: 5px 12px;
-            border-radius: 16px;
+            padding: 4px 10px;
+            border-radius: 14px;
             color: #9aa0a6;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             font-size: 11px;
-            font-weight: 500;
         }
         .copy-msg-btn:hover {
             background: #10a37f;
             color: white;
         }
         .copy-msg-btn svg {
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             stroke: currentColor;
         }
         .copy-msg-btn.copied {
@@ -133,20 +160,19 @@
             color: white;
         }
         
-        /* Input konteyner - Gemini/DeepSeek uslubi */
+        /* ========== INPUT - BALAND, KAMROQ YARIM OY ========== */
         .input-container { 
-            padding: 16px 24px 24px 24px;
+            padding: 16px 20px 24px 20px;
             background: #0a0a0a;
             border-top: 1px solid #1f1f1f;
-            position: relative;
-            z-index: 10;
+            flex-shrink: 0;
         }
         .input-wrapper { 
-            max-width: 800px; 
+            max-width: 700px; 
             margin: 0 auto; 
             position: relative;
-            border: 1px solid #2a2a2a;
-            border-radius: 32px;
+            border: 1px solid #3a3a3a;
+            border-radius: 24px;
             background: #1a1a1a;
             transition: all 0.2s;
         }
@@ -156,25 +182,27 @@
         }
         .input-row textarea { 
             width: 100%; 
-            padding: 14px 52px 14px 20px; 
+            padding: 18px 52px 18px 20px;
             background: transparent;
             border: none;
-            border-radius: 32px;
+            border-radius: 24px;
             color: #e8eaed;
             font-size: 16px;
             font-family: inherit;
             resize: none;
             outline: none;
             line-height: 1.5;
+            min-height: 62px;
+            max-height: 150px;
         }
         .send-btn { 
             position: absolute; 
-            right: 12px; 
-            bottom: 10px; 
+            right: 14px; 
+            bottom: 14px; 
             background: transparent;
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             cursor: pointer;
             color: #6b6b6b;
@@ -292,28 +320,67 @@
         ::-webkit-scrollbar-track { background: #0f0f0f; }
         ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
         
+        /* ========== TELEFON VERSIYASI - AVTOMATIK MOSLASHUV ========== */
         @media (max-width: 768px) {
-            .sidebar { position: fixed; top: 0; left: 0; transform: translateX(-100%); height: 100vh; z-index: 1000; transition: transform 0.3s ease; }
+            body {
+                position: fixed;
+                overflow: hidden;
+            }
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translateX(-100%);
+                height: 100%;
+                z-index: 1000;
+                transition: transform 0.3s ease;
+            }
             .sidebar.open { transform: translateX(0); }
             .main-chat { width: 100%; }
             .menu-toggle { display: block !important; }
             .chat-header .logo { display: none !important; }
+            .chat-header { padding: 12px 16px; }
             .messages-inner { padding: 16px; }
             .message-bubble { max-width: 90%; font-size: 14px; }
-            .welcome-title { font-size: 32px; }
+            .welcome-title { font-size: 28px; }
+            .welcome-subtitle { font-size: 14px; }
             .splash-logo { font-size: 32px; }
-            .chat-header { padding: 12px 16px; }
-            .suggestion-chip { padding: 12px 20px; min-height: 48px; }
-            .new-chat-btn { padding: 14px; }
-            .mode-option { padding: 10px 12px; }
-            .history-item { padding: 12px 12px; }
-            .welcome-stats { gap: 16px; font-size: 11px; }
-            .chat-edit-btn, .chat-menu-btn { opacity: 0.8 !important; }
-            .input-container { padding: 12px 16px 20px 16px; }
-            .input-row textarea { padding: 12px 44px 12px 16px; font-size: 15px; }
-            .send-btn { width: 36px; height: 36px; bottom: 8px; right: 10px; }
-            .copy-msg-btn { padding: 4px 10px; font-size: 10px; }
+            .suggestion-chip { padding: 10px 16px; font-size: 13px; }
+            .new-chat-btn { padding: 12px; font-size: 13px; }
+            .mode-option { padding: 8px 10px; font-size: 12px; }
+            .history-item { padding: 10px 12px; }
+            .welcome-stats { gap: 12px; font-size: 10px; }
+            
+            /* Input - telefon uchun avtomatik moslashuv */
+            .input-container { 
+                padding: 12px 16px 20px 16px;
+            }
+            .input-wrapper { 
+                max-width: 100%;
+                border-radius: 22px;
+            }
+            .input-row textarea { 
+                padding: 16px 48px 16px 16px;
+                font-size: 15px;
+                min-height: 56px;
+                border-radius: 22px;
+            }
+            .send-btn { 
+                right: 12px; 
+                bottom: 12px;
+                width: 36px;
+                height: 36px;
+            }
+            .copy-msg-btn { padding: 3px 8px; font-size: 10px; }
             .overlay { display: block; }
+        }
+        
+        @media (max-width: 480px) {
+            .messages-inner { padding: 12px; }
+            .message-bubble { padding: 10px 14px; font-size: 13px; }
+            .welcome-title { font-size: 24px; }
+            .suggestion-chip { padding: 8px 14px; font-size: 12px; }
+            .input-row textarea { padding: 14px 44px 14px 14px; font-size: 14px; min-height: 52px; }
         }
     </style>
 </head>
@@ -344,8 +411,50 @@
             <div class="sidebar-footer"><div>⚡ Tezkor · Kuchli</div></div>
         </div>
         <div class="main-chat">
-            <div class="chat-header"><div class="header-left"><button class="menu-toggle" onclick="toggleSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="logo" id="logo">Jalolmirzo AI</div></div><div class="status-indicator"><div class="status-dot"></div><span id="statusText">Online · Ultra Fast</span></div></div>
-            <div class="messages-container" id="messagesContainer"><div class="messages-inner" id="messagesInner"><div class="welcome-screen" id="welcomeScreen"><div class="welcome-title">Jalolmirzo AI v2</div><div class="welcome-subtitle">Sizning intellektual yordamchingiz!</div><div class="suggestions"><div class="suggestion-chip" onclick="sendSuggestion('Matematikadan masala yechib ber')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10a37f" stroke-width="2"><polygon points="3 21 12 3 21 21"/><line x1="3" y1="21" x2="21" y2="21"/></svg> Matematika</div><div class="suggestion-chip" onclick="sendSuggestion('Fizikadan qonunlarni tushuntir')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2C12 2 8 6 8 12C8 18 12 22 12 22"/><path d="M12 2C12 2 16 6 16 12C16 18 12 22 12 22"/><path d="M5 8C5 8 3 12 5 16"/><path d="M19 8C19 8 21 12 19 16"/></svg> Fizika</div><div class="suggestion-chip" onclick="sendSuggestion('Kod yozib ber')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M9 20h6"/><path d="M12 16v4"/></svg> Kod yozish</div><div class="suggestion-chip" onclick="sendSuggestion('Ona tilida xatolarni tuzat')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Ona tili</div></div><div class="welcome-stats"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> v3 → 70 mlrd o'zbek modeli</span><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 2L15 9H22L16 14L19 21L12 16.5L5 21L8 14L2 9H9L12 2Z"/></svg> v4 → Multi-modal</span><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 2L12 8M12 2L9 5M12 2L15 5"/><path d="M12 8C12 8 7 9 7 15H17C17 9 12 8 12 8Z"/><path d="M12 15V21"/></svg> v5 → Rasm yaratish</span></div><div class="welcome-subtitle" style="margin-top:24px;font-size:13px;">🎯 Maqsad: 41-Maktab o'quvchilariga eng tez va sifatli AI xizmatini taqdim etish.</div></div></div></div>
+            <div class="chat-header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                    </button>
+                    <div class="logo" id="logo">Jalolmirzo AI</div>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span id="statusText">Online · Ultra Fast</span>
+                </div>
+            </div>
+            <div class="messages-container" id="messagesContainer">
+                <div class="messages-inner" id="messagesInner">
+                    <div class="welcome-screen" id="welcomeScreen">
+                        <div class="welcome-title">Jalolmirzo AI v2</div>
+                        <div class="welcome-subtitle">Sizning intellektual yordamchingiz!</div>
+                        <div class="suggestions">
+                            <div class="suggestion-chip" onclick="sendSuggestion('Matematikadan masala yechib ber')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10a37f" stroke-width="2"><polygon points="3 21 12 3 21 21"/><line x1="3" y1="21" x2="21" y2="21"/></svg> Matematika
+                            </div>
+                            <div class="suggestion-chip" onclick="sendSuggestion('Fizikadan qonunlarni tushuntir')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2C12 2 8 6 8 12C8 18 12 22 12 22"/><path d="M12 2C12 2 16 6 16 12C16 18 12 22 12 22"/><path d="M5 8C5 8 3 12 5 16"/><path d="M19 8C19 8 21 12 19 16"/></svg> Fizika
+                            </div>
+                            <div class="suggestion-chip" onclick="sendSuggestion('Kod yozib ber')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M9 20h6"/><path d="M12 16v4"/></svg> Kod yozish
+                            </div>
+                            <div class="suggestion-chip" onclick="sendSuggestion('Ona tilida xatolarni tuzat')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Ona tili
+                            </div>
+                        </div>
+                        <div class="welcome-stats">
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> v3 → 70 mlrd o'zbek modeli</span>
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 2L15 9H22L16 14L19 21L12 16.5L5 21L8 14L2 9H9L12 2Z"/></svg> v4 → Multi-modal</span>
+                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M12 2L12 8M12 2L9 5M12 2L15 5"/><path d="M12 8C12 8 7 9 7 15H17C17 9 12 8 12 8Z"/><path d="M12 15V21"/></svg> v5 → Rasm yaratish</span>
+                        </div>
+                        <div class="welcome-subtitle" style="margin-top:24px;font-size:13px;">🎯 Maqsad: 41-Maktab o'quvchilariga eng tez va sifatli AI xizmatini taqdim etish.</div>
+                    </div>
+                </div>
+            </div>
             <div class="input-container">
                 <div class="input-wrapper">
                     <div class="input-row">
