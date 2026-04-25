@@ -47,13 +47,56 @@
         .mode-option.active svg { stroke: white; }
         .mode-info { font-size: 11px; color: #6b6b6b; text-align: center; margin-top: 8px; }
         
-        .admin-panel { background: #1a1a1a; margin: 12px; padding: 12px; border-radius: 12px; display: none; border: 1px solid #10a37f; }
+        /* ========== ADMIN PANEL (LOCALSTORAGE) ========== */
+        .admin-panel { 
+            background: #1a1a1a; 
+            margin: 12px; 
+            padding: 12px; 
+            border-radius: 12px; 
+            display: none; 
+            border: 1px solid #10a37f;
+        }
         .admin-panel.show { display: block; }
-        .admin-title { font-size: 14px; color: #10a37f; margin-bottom: 8px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .admin-stats { font-size: 11px; color: #9aa0a6; margin-bottom: 8px; }
-        .admin-stats span { color: #10a37f; font-weight: 600; }
-        .clear-cache-btn { margin-top: 8px; padding: 6px 12px; background: #2a2a2a; border: none; border-radius: 20px; color: #f28b82; font-size: 11px; cursor: pointer; width: 100%; }
-        .view-chats-btn { margin-top: 8px; padding: 8px 12px; background: #10a37f; border: none; border-radius: 20px; color: white; font-size: 12px; cursor: pointer; width: 100%; font-weight: 600; }
+        .admin-title { font-size: 14px; color: #10a37f; margin-bottom: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .admin-stats { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px; 
+            margin-bottom: 12px;
+        }
+        .stat-card {
+            background: #0f0f0f;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10a37f;
+        }
+        .stat-label {
+            font-size: 10px;
+            color: #9aa0a6;
+        }
+        .admin-btn {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .admin-btn-primary {
+            background: #10a37f;
+            color: white;
+        }
+        .admin-btn-danger {
+            background: #2a2a2a;
+            color: #f28b82;
+        }
         
         .chat-history { flex: 1; overflow-y: auto; padding: 12px; }
         .history-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; margin-bottom: 2px; cursor: pointer; transition: background 0.2s; }
@@ -160,7 +203,7 @@
             color: white;
         }
         
-        /* ========== INPUT - BALAND, KAMROQ YARIM OY ========== */
+        /* ========== INPUT ========== */
         .input-container { 
             padding: 16px 20px 24px 20px;
             background: #0a0a0a;
@@ -320,7 +363,7 @@
         ::-webkit-scrollbar-track { background: #0f0f0f; }
         ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
         
-        /* ========== TELEFON VERSIYASI - AVTOMATIK MOSLASHUV ========== */
+        /* ========== TELEFON VERSIYASI ========== */
         @media (max-width: 768px) {
             body {
                 position: fixed;
@@ -351,26 +394,10 @@
             .history-item { padding: 10px 12px; }
             .welcome-stats { gap: 12px; font-size: 10px; }
             
-            /* Input - telefon uchun avtomatik moslashuv */
-            .input-container { 
-                padding: 12px 16px 20px 16px;
-            }
-            .input-wrapper { 
-                max-width: 100%;
-                border-radius: 22px;
-            }
-            .input-row textarea { 
-                padding: 16px 48px 16px 16px;
-                font-size: 15px;
-                min-height: 56px;
-                border-radius: 22px;
-            }
-            .send-btn { 
-                right: 12px; 
-                bottom: 12px;
-                width: 36px;
-                height: 36px;
-            }
+            .input-container { padding: 12px 16px 20px 16px; }
+            .input-wrapper { max-width: 100%; border-radius: 22px; }
+            .input-row textarea { padding: 16px 48px 16px 16px; font-size: 15px; min-height: 56px; border-radius: 22px; }
+            .send-btn { right: 12px; bottom: 12px; width: 36px; height: 36px; }
             .copy-msg-btn { padding: 3px 8px; font-size: 10px; }
             .overlay { display: block; }
         }
@@ -401,12 +428,31 @@
                 </a>
             </div>
             <div class="mode-toggle"><div class="mode-switch" id="modeSwitch"><div class="mode-option" data-mode="normal" onclick="setMode('normal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> ODDIY</div><div class="mode-option" data-mode="pro" onclick="setMode('pro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> PRO</div></div><div class="mode-info" id="modeInfo"></div></div>
+            
             <div class="admin-panel" id="adminPanel">
                 <div class="admin-title">👑 Admin panel</div>
-                <div class="admin-stats" id="adminStats"></div>
-                <button class="clear-cache-btn" onclick="clearCache()">🗑️ Keshni tozalash</button>
-                <button class="view-chats-btn" onclick="showAllChats()">📋 Barcha chatlarni ko'rish</button>
+                <div class="admin-stats" id="adminStats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="statChats">0</div>
+                        <div class="stat-label">Chatlar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statMessages">0</div>
+                        <div class="stat-label">Xabarlar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statCache">0</div>
+                        <div class="stat-label">Kesh</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statUsers">0</div>
+                        <div class="stat-label">Foydalanuvchilar</div>
+                    </div>
+                </div>
+                <button class="admin-btn admin-btn-danger" onclick="clearLocalCache()">🗑️ Keshni tozalash</button>
+                <button class="admin-btn admin-btn-primary" onclick="showAllLocalChats()">📋 Barcha chatlarni ko'rish</button>
             </div>
+            
             <div class="chat-history" id="chatHistory"></div>
             <div class="sidebar-footer"><div>⚡ Tezkor · Kuchli</div></div>
         </div>
@@ -496,7 +542,87 @@
         }
         
         function getFromCache(query) { return cache[query.toLowerCase()] || null; }
-        function clearCache() { cache = {}; cacheSize = 0; localStorage.setItem('jalolmirzo_cache', '{}'); localStorage.setItem('jalolmirzo_cache_size', '0'); alert("✅ Kesh tozalandi!"); if (isAdmin) updateAdminStats(); }
+        
+        function updateAdminStats() {
+            if (!isAdmin) return;
+            document.getElementById('statChats').innerHTML = chats.length;
+            let totalMessages = 0;
+            for (let chat of chats) totalMessages += chat.messages.length;
+            document.getElementById('statMessages').innerHTML = totalMessages;
+            document.getElementById('statCache').innerHTML = Object.keys(cache).length;
+            document.getElementById('statUsers').innerHTML = "1";
+        }
+        
+        function clearLocalCache() {
+            if (!confirm("Keshni tozalansinmi? (AI javoblari o'chadi)")) return;
+            cache = {};
+            cacheSize = 0;
+            localStorage.setItem('jalolmirzo_cache', '{}');
+            localStorage.setItem('jalolmirzo_cache_size', '0');
+            alert("✅ Kesh tozalandi!");
+            updateAdminStats();
+        }
+        
+        function showAllLocalChats() {
+            if (!isAdmin) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'admin-modal';
+            
+            let chatsHtml = '<div class="admin-modal-content"><div class="admin-modal-header"><h3>📋 Barcha chatlar</h3><button class="admin-modal-close" onclick="this.closest(\'.admin-modal\').remove()">✕</button></div><div class="admin-modal-body"><div class="admin-chat-list">';
+            
+            for (let chat of chats) {
+                const messageCount = chat.messages.length;
+                const lastMessage = chat.messages[messageCount - 1]?.content || 'Xabar yo\'q';
+                const lastMessagePreview = lastMessage.length > 60 ? lastMessage.substring(0, 60) + '...' : lastMessage;
+                const chatTime = new Date(chat.messages[0]?.time || chat.id).toLocaleString('uz-UZ');
+                
+                chatsHtml += `
+                    <div class="admin-chat-item" onclick="viewLocalChatDetail(${chat.id})">
+                        <div class="admin-chat-header">
+                            <span class="admin-chat-name">💬 ${chat.name}</span>
+                            <span class="admin-chat-time">📅 ${chatTime}</span>
+                        </div>
+                        <div class="admin-chat-preview">📝 ${messageCount} ta xabar | ${lastMessagePreview}</div>
+                    </div>
+                `;
+            }
+            
+            chatsHtml += '</div></div></div>';
+            modal.innerHTML = chatsHtml;
+            document.body.appendChild(modal);
+        }
+        
+        function viewLocalChatDetail(chatId) {
+            const chat = chats.find(c => c.id === chatId);
+            if (!chat) return;
+            
+            const modal = document.querySelector('.admin-modal');
+            if (!modal) return;
+            
+            let messagesHtml = '';
+            for (let msg of chat.messages) {
+                const time = new Date(msg.time).toLocaleString('uz-UZ');
+                messagesHtml += `
+                    <div class="admin-chat-message ${msg.role}">
+                        <strong>${msg.role === 'user' ? '👤 Foydalanuvchi' : '🤖 Jalolmirzo AI'}</strong><br>
+                        ${msg.content.replace(/\n/g, '<br>')}
+                        <div style="font-size: 10px; color: #6b6b6b; margin-top: 6px;">${time}</div>
+                    </div>
+                `;
+            }
+            
+            const body = modal.querySelector('.admin-modal-body');
+            body.innerHTML = `
+                <div style="margin-bottom: 16px;">
+                    <button onclick="location.reload()" style="background: #10a37f; border: none; padding: 8px 16px; border-radius: 20px; color: white; cursor: pointer; margin-bottom: 12px;">← Barcha chatlar</button>
+                    <h4 style="color: #10a37f; margin-top: 12px;">💬 ${chat.name}</h4>
+                </div>
+                <div style="max-height: 500px; overflow-y: auto;">
+                    ${messagesHtml || '<p style="color: #6b6b6b;">Hech qanday xabar yo\'q</p>'}
+                </div>
+            `;
+        }
         
         // ============ STATE ============
         let isLoading = false;
@@ -543,10 +669,6 @@
             document.getElementById('modeInfo').innerHTML = `${currentMode === 'normal' ? '🔵 ODDIY' : '🟣 PRO'} · ${limit - currentRequests} so'rov qoldi`;
         }
         
-        function updateAdminStats() { 
-            document.getElementById('adminStats').innerHTML = `📊 ODDIY: ${normalRequests}/150 | PRO: ${proRequests}/50<br>🗄️ Kesh: ${(cacheSize / 1024 / 1024).toFixed(1)} MB<br>📋 Chatlar: ${chats.length} ta`; 
-        }
-        
         function setMode(mode) { 
             currentMode = mode; 
             localStorage.setItem('jalolmirzo_mode', mode); 
@@ -564,7 +686,7 @@
                 if (pwd === "01170310") {
                     isAdmin = true; 
                     document.getElementById('adminPanel').classList.add('show'); 
-                    updateAdminStats(); 
+                    updateAdminStats();
                 } else {
                     alert("❌ Parol xato!");
                 }
@@ -573,79 +695,7 @@
             setTimeout(() => { adminClickCount = 0; }, 3000); 
         }
         
-        function showAllChats() {
-            if (!isAdmin) {
-                alert("⚠️ Admin emassiz!");
-                return;
-            }
-            
-            const modal = document.createElement('div');
-            modal.className = 'admin-modal';
-            
-            let chatsHtml = '<div class="admin-chat-list">';
-            for (let chat of chats) {
-                const messageCount = chat.messages.length;
-                const lastMessage = chat.messages[messageCount - 1]?.content || 'Xabar yo\'q';
-                const lastMessagePreview = lastMessage.length > 60 ? lastMessage.substring(0, 60) + '...' : lastMessage;
-                const chatTime = new Date(chat.messages[0]?.time || chat.id).toLocaleString('uz-UZ');
-                
-                chatsHtml += `
-                    <div class="admin-chat-item" onclick="viewChatDetail(${chat.id})">
-                        <div class="admin-chat-header">
-                            <span class="admin-chat-name">💬 ${chat.name}</span>
-                            <span class="admin-chat-time">📅 ${chatTime}</span>
-                        </div>
-                        <div class="admin-chat-preview">📝 ${messageCount} ta xabar | ${lastMessagePreview}</div>
-                    </div>
-                `;
-            }
-            chatsHtml += '</div>';
-            
-            modal.innerHTML = `
-                <div class="admin-modal-content">
-                    <div class="admin-modal-header">
-                        <h3>📋 Barcha chatlar (${chats.length} ta)</h3>
-                        <button class="admin-modal-close" onclick="this.closest('.admin-modal').remove()">✕</button>
-                    </div>
-                    <div class="admin-modal-body">
-                        ${chatsHtml}
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-        
-        function viewChatDetail(chatId) {
-            const chat = chats.find(c => c.id === chatId);
-            if (!chat) return;
-            
-            const modal = document.querySelector('.admin-modal');
-            if (!modal) return;
-            
-            let messagesHtml = '';
-            for (let msg of chat.messages) {
-                const time = new Date(msg.time).toLocaleString('uz-UZ');
-                messagesHtml += `
-                    <div class="admin-chat-message ${msg.role}">
-                        <strong>${msg.role === 'user' ? '👤 Foydalanuvchi' : '🤖 Jalolmirzo AI'}</strong><br>
-                        ${msg.content.replace(/\n/g, '<br>')}
-                        <div style="font-size: 10px; color: #6b6b6b; margin-top: 6px;">${time}</div>
-                    </div>
-                `;
-            }
-            
-            const body = modal.querySelector('.admin-modal-body');
-            body.innerHTML = `
-                <div style="margin-bottom: 16px;">
-                    <button onclick="location.reload()" style="background: #10a37f; border: none; padding: 8px 16px; border-radius: 20px; color: white; cursor: pointer; margin-bottom: 12px;">← Barcha chatlar</button>
-                    <h4 style="color: #10a37f;">💬 ${chat.name}</h4>
-                </div>
-                <div style="max-height: 500px; overflow-y: auto;">
-                    ${messagesHtml || '<p style="color: #6b6b6b;">Hech qanday xabar yo\'q</p>'}
-                </div>
-            `;
-        }
-        
+        // ============ SIDEBAR ============
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
@@ -669,6 +719,7 @@
             }
         }
         
+        // ============ NOM TAHRIRLASH ==========
         function showRenameModal(chatId) {
             const chat = chats.find(c => c.id === chatId);
             if (!chat) return;
@@ -758,7 +809,6 @@
                 item.appendChild(menuBtn);
                 historyDiv.appendChild(item);
             });
-            if (isAdmin) updateAdminStats();
         }
         
         async function getAIResponse(message, history) {
