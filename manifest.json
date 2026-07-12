@@ -1,0 +1,22 @@
+{
+  "name": "41-Maktab",
+  "short_name": "41-Maktab",
+  "description": "41-Maktab — Bilim kelajak kaliti. Farg'ona viloyati, Bag'dod tumani",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
