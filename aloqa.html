@@ -11,16 +11,16 @@
 <body>
 
   <!-- HEADER -->
-  <header class="header">
+  <header class="header" id="header">
     <div class="container header-inner">
       <div class="logo">
-        <img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50"> <!-- width/height qo'shildi -->
+        <img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50">
         <div class="brand">
           <h1>41-Maktab</h1>
           <p>Bilim – kelajak kaliti</p>
         </div>
       </div>
-      <nav class="nav">
+      <nav class="nav" id="mainNav">
         <ul>
           <li><a href="index.html">Asosiy</a></li>
           <li><a href="yangiliklar.html">Yangiliklar</a></li>
@@ -28,17 +28,18 @@
           <li><a href="testlar.html">Testlar</a></li>
           <li><a href="kutubxona.html">Kutubxona</a></li>
           <li><a href="ai.html">AI</a></li>
-          <li><a href="aloqa.html" class="active" aria-current="page">Aloqa</a></li> <!-- aria-current qo'shildi -->
+          <li><a href="aloqa.html" class="active" aria-current="page">Aloqa</a></li>
         </ul>
       </nav>
-
-      <!-- 🔍 Qidiruv va 🌙 Dark Mode tugmalari (boshqa sahifalar bilan izchillik uchun qo'shildi) -->
       <div class="nav-tools">
-        <input type="text" id="search-input" placeholder="Qidiruv..." class="search-box" aria-label="Sayt bo'yicha qidiruv">
-        <button id="dark-mode-toggle" class="dark-btn" aria-label="Qorong'u rejimni yoqish/o'chirish">🌙</button>
+        <button id="dark-mode-toggle" class="dark-btn" aria-label="Qorong'u rejim">🌙</button>
       </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menyu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+  <div class="nav-overlay" id="navOverlay"></div>
 
 <!-- PAGE TITLE -->
 <section class="page-title contact-title">
@@ -98,7 +99,6 @@
 
       </div>
     </section>
-  </main> <!-- MAIN tugashi -->
 
   <!-- FOOTER -->
   <footer class="footer">

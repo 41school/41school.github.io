@@ -2,7 +2,11 @@
 // ADMIN.JS - ADMIN PANEL FUNKSIYALARI
 // ============================================
 
-const ADMIN_PASSWORD = "01170310";
+// Eslatma: Client-side parol to'liq xavfsiz emas.
+// Haqiqiy himoya uchun server-side autentifikatsiya kerak.
+// Parol base64 formatida saqlanadi (oddiy obfuskatsiya).
+const _p = "MDExNzAzMTA=";
+function _gp() { try { return atob(_p); } catch(e) { return ""; } }
 const ACTIVE_TESTS_COUNT = 20;
 
 let isAdminLoggedIn = false;
@@ -10,7 +14,7 @@ let isAdminLoggedIn = false;
 // ============ LOGIN ============
 function checkAdminLogin() {
   const password = document.getElementById('adminPassword').value;
-  if (password === ADMIN_PASSWORD) {
+  if (password === _gp()) {
     isAdminLoggedIn = true;
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
