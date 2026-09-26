@@ -11,7 +11,7 @@
 <body>
 
   <!-- HEADER -->
-  <header class="header">
+  <header class="header" id="header">
     <div class="container header-inner">
       <div class="logo">
         <img src="images/logo.png" alt="41-maktab logotipi" width="50" height="50">
@@ -20,25 +20,27 @@
           <p>Bilim – kelajak kaliti</p>
         </div>
       </div>
-    <nav class="nav">
+    <nav class="nav" id="mainNav">
       <ul>
         <li><a href="index.html">Asosiy</a></li>
         <li><a href="yangiliklar.html">Yangiliklar</a></li>
         <li><a href="loyihalar.html">Loyihalar</a></li>
-        <li><a href="testlar.html">Testlar</a></li>
+        <li><a href="testlar.html" class="active">Testlar</a></li>
         <li><a href="kutubxona.html">Kutubxona</a></li>
         <li><a href="ai.html">AI</a></li>
         <li><a href="aloqa.html">Aloqa</a></li>
       </ul>
     </nav>
 
-      <!-- Qidiruv va Dark Mode tugmalari -->
       <div class="nav-tools">
-        <input type="text" id="search-input" placeholder="Qidiruv..." class="search-box" aria-label="Sayt bo'yicha qidiruv">
-        <button id="dark-mode-toggle" class="dark-btn" aria-label="Qorong'u rejimni yoqish/o'chirish">🌙</button>
+        <button id="dark-mode-toggle" class="dark-btn" aria-label="Qorong'u rejim">🌙</button>
       </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menyu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+  <div class="nav-overlay" id="navOverlay"></div>
 
 <!-- PAGE TITLE -->
 <section class="page-title test-title">
@@ -197,7 +199,6 @@
 
       </div>
     </section>
-  </main>
 
   <!-- FOOTER -->
   <footer class="footer">
